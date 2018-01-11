@@ -1,23 +1,16 @@
+%% main configuration of the struct World
 function [World, rob] = configuration(rob, sen_rf, Lmks)
-global t;
+    global t;
     AxisDim = 10;
-    % If you want to make any changes to the default robot/sensor settings
-    % then do that here - the changes will be passed back into the main
-    % SLAM function.
-    
+    World.tend = t;
     % Initial pose estimate is perfect
     rob.r = rob.R;
     
+    World.W = Lmks;
     % These values are set by an engineer to match the system:
     World.Q = diag(rob.q .^ 2);         % System uncertainty
-    World.M = diag(sen_rf.noise .^ 2);  % Measurement uncertainty
-    
-    World.tend = t;
-
-    World.W = Lmks;
-    
-    
-    
+    World.M = diag(sen_rf.noise .^ 2);  % Measurement uncertainty   
+        
     % Initialise measurement vector
     World.y = zeros(2,size(World.W,2));
 
@@ -51,8 +44,9 @@ global t;
     % correlations required for a scan match to be accepted
     World.scan_corr_tolerance = 20;
     % Descretised grid map values
-    World.map_vals = -AxisDim+World.map_res:World.map_res:AxisDim-World.map_res;
+    World.map_vals = 0 + World.map_res : World.map_res : 10 - World.map_res;
     World.gridmap = zeros(AxisDim * 2 / World.map_res - 1);
+    Woeld.gridmap = zeros(5);
     World.gridmap_counter = ones(size(World.gridmap)) * round(255/2);
     World.scan_data = [];
     World.scan_global = [];

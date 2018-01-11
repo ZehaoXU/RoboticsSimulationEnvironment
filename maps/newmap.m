@@ -1,38 +1,16 @@
-%画地图（散点�?
-function newmap
+% build map
+function [landmarks obstacle] = newmap
+global obstacle landmarks
+subplot(221)
 clear
 axis([0 10 0 10]);
 hold on
 grid on;
  
-plot(2:0.04:6, 3, '.k');  
-plot(2:0.04:6, 5, '.k');  
-plot(2, 3:0.04:5, '.k');  
-plot(6, 3:0.04:5, '.k');  
 
-plot(4:0.04:5, 6, '.k');  
-plot(4:0.04:5, 7, '.k');  
-plot(4, 6:0.04:7, '.k');  
-plot(5, 6:0.04:7, '.k');  
+load obstacle;
+load landmarks;
 
-plot(5:0.04:6, 8, '.k');  
-plot(5:0.04:6, 10, '.k');  
-plot(5, 8:0.04:10, '.k');  
-plot(6, 8:0.04:10, '.k');  
-
-plot(6.5:0.04:8, 7, '.k');  
-plot(6.5:0.04:8, 8, '.k');  
-plot(6.5, 7:0.04:8, '.k');  
-plot(8, 7:0.04:8, '.k');  
-
-plot(8.8:0.04:9.8, 5, '.k');  
-plot(8.8:0.04:9.8, 6, '.k');  
-plot(8.8, 5:0.04:6, '.k');  
-plot(9.8, 5:0.04:6, '.k');  
-
-scatter(4, 2, '*b');
-scatter(6, 6, '*b');
-scatter(9, 3, '*b');
-scatter(8, 9, '*b');
-
+plot(obstacle(:, 1) , obstacle(:, 2), '.k'); 
+scatter(landmarks(:, 1), landmarks(:, 2), 'xb'); 
 end

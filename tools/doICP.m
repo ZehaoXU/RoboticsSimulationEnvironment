@@ -1,33 +1,9 @@
-% Author: Adapted by Jai Juneja from a function created by Ajmal Saeed
-% Mian. Modified to include the following functionality:
-%   - Calculation of estimated variance
-%   - Initial guess input to reduce number of iterations for convergence
-%   and increase likelihood of convergence
-% Date Modified: 16/03/2013
-%
-% Original code includes the following copyright information:
-% This code is written by Ajmal Saeed Mian {ajmal@csse.uwa.edu.au}
-% Computer Science, The University of Western Australia. The code
-% may be used, modified and distributed for research purposes with
-% acknowledgement of the author and inclusion of this copyright information.
-function [R, t, corr, icp_var, data2] = doICP(data1, data2, res, u, tri)
-% [R, t, corr, error, data2] = icp2(data1, data2, res, u, tri)
-% 
-% This is an implementation of the Iterative Closest Point (ICP) algorithm.
-% The function takes two data sets and registers data2 with data1. It is
-% assumed that data1 and data2 are in approximation registration. The code
-% iterates till no more correspondences can be found.
-%
-% This is a modified version (12 April, 2005). It is more accurate and has 
-% less chances of getting stuck in a local minimum as opposed to my earlier
-% version icp.m 
-%
 % Arguments: data1 - 3 x n matrix of the x, y and z coordinates of data set 1
 %            data2 - 3 x m matrix of the x, y and z coordinates of data set 2
 %            res   - the tolerance distance for establishing closest point
 %                     correspondences. Normally set equal to the resolution
 %                     of data1
-%           ·Ö±æÂÊ ÕâÍæÒâÅ£±Æ
+%           åˆ†è¾¨ç‡ è¿™ç©æ„ç‰›é€¼
 %            u     - 2 x 1 matrix in local polar co-ordinates with initial
 %                    guess of rototranslation
 %            tri   - optional argument. obtained by tri = delaunayn(data1');
@@ -49,7 +25,7 @@ R = eye(2);
 t = zeros(2,1);
 
 % Determine R1 and t1 from odometry input u:
-% ×ª¹ıÁË¶àÉÙ½Ç¶È
+% è½¬è¿‡äº†å¤šå°‘è§’åº¦
 
 R1 = [cos(u(2)) -sin(u(2)); sin(u(2)) cos(u(2))];
 t1 = [u(1); 0];
@@ -60,7 +36,7 @@ t_init = t1;
 if nargin < 5
     tri = delaunayn(data1');
 end
-% Èı½ÇÆÊ·Ö
+% ä¸‰è§’å‰–åˆ†
 n = 0;
 while c2 ~= c1
     c1 = c2;
@@ -82,7 +58,7 @@ while c2 ~= c1
     if n > maxIter
         break;
     end
-    % If there is no correlation revert to odometry data
+    
     if isempty(corr)
         R = R_init;
         t = t_init;
@@ -138,10 +114,10 @@ M = data1(:,corr(:,1));
 mm = mean(M,2);
 S = data2(:,corr(:,2));
 ms = mean(S,2); 
-% ¶ÔÓ¦µÄÁ½¸ö
+% å¯¹åº”çš„ä¸¤ä¸ª
 Sshifted = [S(1,:)-ms(1); S(2,:)-ms(2)];
 Mshifted = [M(1,:)-mm(1); M(2,:)-mm(2)];
-K = Sshifted*Mshifted';% Õâ¸ö¿ÉÒÔµÃµ½Ğı×ª¾ØÕó£¡
+K = Sshifted*Mshifted';% using svd to get rotation matrix
 K = K/n;
 [U A V] = svd(K);
 R1 = V*U';

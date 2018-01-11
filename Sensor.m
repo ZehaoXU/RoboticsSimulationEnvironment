@@ -52,8 +52,8 @@ classdef Sensor < handle
                 scannedObs = zeros(0, 2);
                 is = 1;
                 H = zeros(numSector, 1);
-                while (i <= length(obstacle))						%traverse obstacles �??璐無bstacle in view!!!
-                    d = norm(obstacle(i,:) - robot.Pos);% - robot.Radius;			%鏉╂瑤閲滈梾婊咁暡娑撳孩�?崳銊ゆ眽娑斿妫跨捄婵堫�?
+                while (i <= length(obstacle))						%traverse obstacles to o bstacle in view!!!
+                    d = norm(obstacle(i,:) - robot.Pos);% - robot.Radius;			
                     theta = caculateangle(robot.Pos, obstacle(i, :));
                     if d < 0 
                         d = 0;
@@ -111,8 +111,6 @@ classdef Sensor < handle
 
         end
         
-        % Find all measurements that are out of the sensor's range and set
-        % them to an impossible value so that they can be removed
         function [y, idx] = constrainMeasurement(sen, y)
             off_range = y(1, :) > sen.range | y(1, :) < sen.range_min;
             off_ang = y(2, :) > sen.fov/2 | ...
@@ -120,16 +118,7 @@ classdef Sensor < handle
             y(:, off_range) = inf;
             y(:, off_ang) = inf;
             idx = find(y(1, :) < inf | y(2, :) < inf);
-        end
-        
-        % Generate a scan where the full sweep gives the max range value
-        function y = generateEmptyScan(sen)
-            readings_a = -sen.fov/2 : sen.angular_res : sen.fov/2;
-            numLasers = length(readings_a);
-            y = [repmat(sen.range, 1, numLasers); readings_a];
-        end
-        
-        
+        end     
 
     end
 end

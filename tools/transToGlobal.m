@@ -1,7 +1,4 @@
-% Function transforms a point p_r from robot's local frame to the global
-% frame.
-%
-% Inputs: 
+% get the global cordinate. Inputs: 
 %   r = [x y alpha]'	:   Robot frame
 %   p_r                 :	Point in robot's frame (2*n matrix for n points)
 %

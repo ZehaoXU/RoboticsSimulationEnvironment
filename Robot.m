@@ -79,13 +79,6 @@ classdef Robot < handle
                 % Hence, Jacobians of r_new:
                 RNEW_r = [PNEW_r; 0 0 ANEW_a];
 
-                % We define the perturbation such that it is in the same space
-                % as control u. This means that there is uncertainty in how much
-                % the robot advances and how much it turns. This means that the
-                % Jacobians of RNEW with respect to u are the same as the Jacobian
-                % of RNEW with respect to n. Less coding necessary, so a good
-                % option.
-
                 RNEW_u = [PNEW_dp(:, 1) zeros(2, 1); 0 ANEW_da];
 
             end
@@ -94,46 +87,6 @@ classdef Robot < handle
             
         end
 
-        % Return the vertices of a triangle of dimensions base*length, 
-        % centred at (x, y) and with orientation a.
-        %
-        % Inputs:
-        %   r = [x y a]'        :   local co-ordinate frame of robot
-        %   base                :   size of triangle base
-        %   length              :   length of triangle
-        %
-        % Outputs:
-        %   p = [x1 x2 x3 x4;
-        %        y1 y2 y3 y4]	:   vertices of resulting triangle
-        function p = computeTriangle(rob, strRobType, r_pos)
-            
-            if nargin < 2
-                pose = rob.r;
-            elseif nargin < 3 && strcmp(strRobType, 'true')
-                pose = rob.R;
-            elseif nargin < 4
-                pose = r_pos;
-            else
-                error('strRobType can only take the value "True"');
-            end
-            
-            p = zeros(2, 4);
-
-            p(:, 1) = [-rob.length/3; -rob.wheelbase/2];
-            p(:, 2) = [2*rob.length/3; 0];
-            p(:, 3) = [-rob.length/3; rob.wheelbase/2;];
-
-            for i = 1:3
-                p(:, i) = transToGlobal(pose, p(:, i));
-            end
-
-            % We include a fourth point that is equal to the first point in the
-            % triangle. This allows us to 'close' the triangle when plotting it
-            % using the line function.
-            p(:, 4) = p(:, 1);
-
-        end
-        
         function steer(rob, Wpts)
             % Determine if current waypoint reached
             wpt = Wpts(:, rob.curr_wpt);

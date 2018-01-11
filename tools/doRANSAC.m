@@ -1,5 +1,4 @@
 %% doRANSAC.m : registration of two data sets
-% author: Tianqing Fang
 % Input    : Data1 - 3 x n matrix of the x, y and z coordinates of data set 1
 %            Data2 - 3 x m matrix of the x, y and z coordinates of data set 2
 %            Rslt   - the tolerance distance for establishing closest point
@@ -40,7 +39,7 @@ Data2_R = Data2;
 flag1 = 0; flag2 = 1;
 while flag2 ~= flag1
     flag1 = flag2;
-    [Corr, D] = dsearchn(Data1', tri, Data2_R'); % N-D nearest point search % 看看这个是什么！
+    [Corr, D] = dsearchn(Data1', tri, Data2_R'); % N-D nearest point search % 鐪嬬湅杩欎釜鏄粈涔堬紒
     Corr(:,2:3) = [[1 : length(Corr)]' D];    
     Corr(find(D > 2*Rslt),:) = []; % remove corr points that without 2 times resolution
     

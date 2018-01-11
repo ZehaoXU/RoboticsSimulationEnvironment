@@ -1,4 +1,4 @@
-function plotAll(robotPos, H, kt, kb, scan_data)
+function plotAll(robot, H, kt, kb, scan_data)
     subplot(2, 2, 1); 
     Rob = line(...
         'linestyle','none',...
@@ -6,7 +6,7 @@ function plotAll(robotPos, H, kt, kb, scan_data)
         'color','b',...
         'xdata',[],...
         'ydata',[]);
-    set(Rob, 'xdata', robotPos(1), 'ydata', robotPos(2))
+    set(Rob, 'xdata', robot.Pos(1), 'ydata', robot.Pos(2))
    
     if ~isempty(scan_data)
     % scatter(scan_data(1, :), scan_data(2, :), 'xr');
@@ -29,7 +29,7 @@ function plotAll(robotPos, H, kt, kb, scan_data)
         y=[0:0.01:1]; 	%to get a smoother line
     end
     hold off		
-    bar(x1,	H, 'b');            %画直方图
+    bar(x1,	H, 'b');            %plot the histogram
     hold on;
     ylabel('H(k)');
     xlabel('sector k');
@@ -41,13 +41,6 @@ function plotAll(robotPos, H, kt, kb, scan_data)
     hold off
     if ~isempty(scan_data)
     scatter(scan_data(1, :), scan_data(2, :), 'xr');
-    %  Scan = line(...
-    %     'linestyle','none',...
-    %     'marker','x',...
-    %     'color','r',...
-    %     'xdata',[],...
-    %     'ydata',[]);
-    %  set(Scan, 'xdata', scan_data(1, :), 'ydata', scan_data(2, :))
     end
 
     drawnow;
